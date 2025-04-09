@@ -27,13 +27,13 @@
 1. **Клонируйте репозиторий:**
 
     ```bash
-    git clone https://github.com/YourUser/YourRepo.git
+    git clone https://github.com/LastArt/tm_prepare.git
     ```
 
 2. **Перейдите в директорию проекта:**
 
     ```bash
-    cd YourRepo
+    cd tm_prepare
     ```
 
 3. **Запустите скрипт (требуются root-права):**
@@ -47,4 +47,4 @@
 Одной командой:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/YourUser/YourRepo/master/tm_prepare.sh | sudo bash
+curl -sL https://raw.githubusercontent.com/LastArt/tm_prepare/master/tm_prepare.sh | sudo bash
