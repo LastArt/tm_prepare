@@ -341,7 +341,7 @@ EOF
     read -rsp "Введите ваш GitHub Token: " github_token
     echo ""
 
-    INSTALL_DIR="/opt/TimeInspector"
+    INSTALL_DIR="/root/TimeInspector"
     if [ -d "$INSTALL_DIR" ]; then
         echo -e "${YELLOW}[i] Папка $INSTALL_DIR уже существует. Обновляем репозиторий...${NC}"
         cd "$INSTALL_DIR" || exit 1
