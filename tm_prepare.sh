@@ -101,7 +101,7 @@ function setup_i2c_display() {
             fi
             ;;
         1)
-            # Если выбран вариант "Продолжить настройку после перезагрузки" – просто продолжаем
+            # Если выбран вариант "Продолжить настройку после перезагрузки" – продолжаем
             ;;
         *)
             echo -e "${RED}Неверный выбор. Завершаем настройку i2c дисплея.${NC}"
@@ -145,12 +145,31 @@ function setup_i2c_display() {
     echo "$i2c_output"
     # Пропускаем первую строку заголовка и ищем первый обнаруженный адрес
     device_address=$(echo "$i2c_output" | awk 'NR>1 {for(i=2;i<=NF;i++) if($i != "--") {print $i; exit}}')
-    if [ -n "$device_address" ]; then
-        echo -e "${GREEN}[✓] Найдено устройство с адресом: $device_address${NC}"
-    else
+
+    # Если устройство не найдено, предлагаем повторить попытку сканирования
+    while [ -z "$device_address" ]; do
         echo -e "${RED}[✗] Устройство на шине i2c-$bus_number не обнаружено.${NC}"
-        exit 1
-    fi
+        echo -e "${RED}Убедитесь, что Вы подключили устройство к плате.${NC}"
+        read -p "Хотите попробовать снова? (1 - Да / 2 - Выход): " retry_choice
+        case "$retry_choice" in
+            1)
+                echo -e "\n${YELLOW}Повторное сканирование шины (i2cdetect -y $bus_number)...${NC}"
+                print_separator
+                i2c_output=$(sudo i2cdetect -y "$bus_number")
+                echo "$i2c_output"
+                device_address=$(echo "$i2c_output" | awk 'NR>1 {for(i=2;i<=NF;i++) if($i != "--") {print $i; exit}}')
+                ;;
+            2)
+                echo -e "${YELLOW}Выход из настройки i2c дисплея.${NC}"
+                exit 1
+                ;;
+            *)
+                echo -e "${RED}Неверный выбор. Попробуйте снова.${NC}"
+                ;;
+        esac
+    done
+
+    echo -e "${GREEN}[✓] Найдено устройство с адресом: $device_address${NC}"
 
     CONFIG_DIR="/root/tm_config"
     if [ ! -d "$CONFIG_DIR" ]; then
