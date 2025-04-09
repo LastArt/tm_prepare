@@ -309,6 +309,65 @@ function setup_remote_connection() {
 }
 
 ##############################################
+# Функция установки программы Time Inspector
+##############################################
+function setup_time_inspector() {
+    echo -e "\n${YELLOW}💻 Установка программы Time Inspector${NC}"
+    print_separator
+
+    CONFIG_DIR="/root/tm_config"
+    if [ ! -d "$CONFIG_DIR" ]; then
+        echo -e "${YELLOW}Папка tm_config не найдена. Создаем папку...${NC}"
+        sudo mkdir -p "$CONFIG_DIR"
+        print_status "Папка $CONFIG_DIR создана"
+    else
+        echo -e "${GREEN}[✓] Папка tm_config уже существует.${NC}"
+    fi
+
+    GENERAL_CFG="$CONFIG_DIR/general_config.cfg"
+    if [ ! -f "$GENERAL_CFG" ]; then
+        echo -e "${YELLOW}Файл general_config.cfg не найден. Создаем файл...${NC}"
+        cat <<EOF | sudo tee "$GENERAL_CFG" > /dev/null
+# Основная конфигурация Time Inspector
+# Добавьте ваши настройки ниже
+EOF
+        print_status "Файл general_config.cfg создан"
+    else
+        echo -e "${GREEN}[✓] Файл general_config.cfg уже существует.${NC}"
+    fi
+
+    echo -e "\n${YELLOW}Для установки программы Time Inspector необходима авторизация в GitHub.${NC}"
+    read -p "Введите ваш GitHub Username: " github_username
+    read -rsp "Введите ваш GitHub Token: " github_token
+    echo ""
+
+    INSTALL_DIR="/opt/TimeInspector"
+    if [ -d "$INSTALL_DIR" ]; then
+        echo -e "${YELLOW}[i] Папка $INSTALL_DIR уже существует. Обновляем репозиторий...${NC}"
+        cd "$INSTALL_DIR" || exit 1
+        sudo git pull || { echo -e "${RED}Ошибка при обновлении репозитория.${NC}"; exit 1; }
+    else
+        sudo git clone https://$github_username:$github_token@github.com/LastArt/TimeInspector.git "$INSTALL_DIR" || { echo -e "${RED}Ошибка клонирования репозитория.${NC}"; exit 1; }
+    fi
+
+    if [ $? -eq 0 ]; then
+        print_status "Программа Time Inspector успешно установлена в $INSTALL_DIR"
+        if [ -x "$INSTALL_DIR/install.sh" ]; then
+            echo -e "${YELLOW}Запускаем скрипт установки программы Time Inspector...${NC}"
+            sudo bash "$INSTALL_DIR/install.sh"
+        else
+            echo -e "${YELLOW}Скрипт установки не найден. Проверьте содержимое репозитория.${NC}"
+        fi
+    else
+        echo -e "${RED}Не удалось скачать программу Time Inspector. Проверьте данные авторизации.${NC}"
+        exit 1
+    fi
+
+    post_subscript_menu
+}
+
+
+##############################################
 # Функция вывода пост-меню: вернуться в главное меню или выйти
 ##############################################
 function post_subscript_menu() {
