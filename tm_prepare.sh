@@ -54,7 +54,7 @@ function print_status() {
 # Функция установки всех пакетов и зависимостей
 ##############################################
 function install_dependencies() {
-    echo -e "\n${YELLOW}🔄 Установка системных пакетов и зависимостей...${NC}"
+     echo -e "\n${YELLOW}🔄 Установка системных пакетов и зависимостей...${NC}"
     print_separator
     sudo apt update && sudo apt upgrade -y
     print_status "Система обновлена"
@@ -77,6 +77,10 @@ function install_dependencies() {
 
     sudo python3 -m pip install --upgrade pip
     print_status "Pip обновлен"
+
+    # Установка OpenCV (opencv-python)
+    sudo python3 -m pip install opencv-python
+    print_status "opencv-python установлен"
 
     sudo python3 -m pip install wheel
     print_status "Wheel установлен"
