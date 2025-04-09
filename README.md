@@ -47,4 +47,5 @@
 Одной командой:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/LastArt/tm_prepare/master/tm_prepare.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/LastArt/tm_prepare/master/tm_prepare.sh -o /tmp/tm_prepare.sh
+sudo bash /tmp/tm_prepare.sh
