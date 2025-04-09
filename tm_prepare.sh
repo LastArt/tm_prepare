@@ -347,7 +347,7 @@ EOF
         cd "$INSTALL_DIR" || exit 1
         sudo git pull || { echo -e "${RED}Ошибка при обновлении репозитория.${NC}"; exit 1; }
     else
-        sudo git clone https://$github_username:$github_token@github.com/LastArt/TimeInspector.git "$INSTALL_DIR" || { echo -e "${RED}Ошибка клонирования репозитория.${NC}"; exit 1; }
+        sudo git clone https://$github_username:$github_token@github.com/LastArt/tm_inspector.git "$INSTALL_DIR" || { echo -e "${RED}Ошибка клонирования репозитория.${NC}"; exit 1; }
     fi
 
     if [ $? -eq 0 ]; then
