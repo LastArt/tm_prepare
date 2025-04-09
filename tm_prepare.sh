@@ -332,50 +332,55 @@ function post_subscript_menu() {
 # Функция главного меню
 ##############################################
 function main_menu() {
-    clear
-    print_logo   # Вывод логотипа всегда наверху
-    echo -e "${BLUE}***********************************************${NC}"
-    echo -e "${BLUE}*              Главное меню                 *${NC}"
-    echo -e "${BLUE}***********************************************${NC}"
-    echo -e "${YELLOW}1. Установка всех зависимостей (рекомендуется сделать первым)${NC}"
-    echo -e "${YELLOW}2. Настройка i2c дисплея${NC}"
-    echo -e "${YELLOW}3. Настройка камеры (USB)${NC}"
-    echo -e "${YELLOW}4. Настройка камеры MIPI${NC}"
-    echo -e "${YELLOW}5. Настройка датчика движения${NC}"
-    echo -e "${YELLOW}6. Настройка удалённого подключения к устройству${NC}"
-    echo -e "${YELLOW}7. Установка программы Time Inspector${NC}"
-    echo ""
-    read -p "Выберите опцию [1-7]: " menu_choice
+    while true; do
+        clear
+        echo -e "${BLUE}***********************************************${NC}"
+        echo -e "${BLUE}*              Главное меню                 *${NC}"
+        echo -e "${BLUE}***********************************************${NC}"
+        echo -e "${YELLOW}1. Установка всех зависимостей (рекомендуется сделать первым)${NC}"
+        echo -e "${YELLOW}2. Настройка i2c дисплея${NC}"
+        echo -e "${YELLOW}3. Настройка камеры (USB)${NC}"
+        echo -e "${YELLOW}4. Настройка камеры MIPI${NC}"
+        echo -e "${YELLOW}5. Настройка датчика движения${NC}"
+        echo -e "${YELLOW}6. Настройка удалённого подключения к устройству${NC}"
+        echo -e "${YELLOW}7. Установка программы Time Inspector${NC}"
+        echo -e "${YELLOW}8. Выход${NC}"
+        echo ""
+        read -p "Выберите опцию [1-8]: " menu_choice
 
-    case "$menu_choice" in
-        1)
-            install_dependencies
-            ;;
-        2)
-            setup_i2c_display
-            ;;
-        3)
-            setup_usb_camera
-            ;;
-        4)
-            setup_mipi_camera
-            ;;
-        5)
-            setup_motion_sensor
-            ;;
-        6)
-            setup_remote_connection
-            ;;
-        7)
-            setup_time_inspector
-            ;;
-        *)
-            echo -e "${RED}Неверный выбор. Завершаю работу.${NC}"
-            exit 1
-            ;;
-    esac
+        case "$menu_choice" in
+            1)
+                install_dependencies
+                ;;
+            2)
+                setup_i2c_display
+                ;;
+            3)
+                setup_usb_camera
+                ;;
+            4)
+                setup_mipi_camera
+                ;;
+            5)
+                setup_motion_sensor
+                ;;
+            6)
+                setup_remote_connection
+                ;;
+            7)
+                setup_time_inspector
+                ;;
+            8)
+                echo -e "${YELLOW}Выход из программы.${NC}"
+                exit 0
+                ;;
+            *)
+                echo -e "${RED}Такого пункта меню нет. Попробуйте еще раз.${NC}"
+                read -p "Нажмите Enter для продолжения..." dummy
+                ;;
+        esac
+    done
 }
-
 ##############################################
 # Запуск главного меню
 ##############################################
